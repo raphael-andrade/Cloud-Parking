@@ -13,7 +13,7 @@ import org.springframework.http.MediaType;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class ParkingControllerIT {
+class ParkingControllerIT extends AbstractContainerBase{
 
     @LocalServerPort
     private int randomPort;
@@ -26,14 +26,14 @@ class ParkingControllerIT {
     @Test
     void whenFindAllThenCheckResult() {
         RestAssured.given()
+                .auth()
+                .basic("user","Dio@123456")
                 .when()
                 .get("/parking")
                 .then()
                 .statusCode(200);
 
     }
-
-
     @Test
     void whenCreateThenCheckIsCreated() {
 
@@ -43,6 +43,8 @@ class ParkingControllerIT {
         createdDTO.setModel("BRASILIA");
         createdDTO.setState("SP");
         RestAssured.given()
+                .auth()
+                .basic("user","Dio@123456")
                 .when()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(createdDTO)
